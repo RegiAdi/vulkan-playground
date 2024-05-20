@@ -15,3 +15,8 @@ $ meson setup build
 $ meson compile -C build
 $ build/vulkan-playground.exe
 ```
+
+## Resources
+
+- Vulkan Guide <https://vkguide.dev/>
+- Vulkan Tutorial <https://vulkan-tutorial.com/>
