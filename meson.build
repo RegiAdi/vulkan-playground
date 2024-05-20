@@ -6,15 +6,27 @@ project(
 
 cmake = import('cmake')
 
+# VULKAN
+vulkan_dep = dependency('vulkan')
+
 # CGLM
 cglm_dep = dependency('cglm')
 
-# GLFW
-glfw_proj = cmake.subproject('glfw')
-glfw_dep = glfw_proj.dependency('glfw')
+# SDL2
+sdl2_dep = dependency('sdl2')
+sdl2_main_dep = dependency('sdl2main')
 
 src = files(
 	'src/main.c'
 )
 
-executable('vulkan-playground', src, win_subsystem: 'windows', dependencies: [cglm_dep, glfw_dep])
+executable(
+	'vulkan-playground',
+	src,
+	win_subsystem: 'windows',
+	dependencies: [
+		cglm_dep,
+		sdl2_dep,
+		sdl2_main_dep
+	]
+)

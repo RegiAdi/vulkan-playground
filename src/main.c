@@ -1,39 +1,42 @@
+#include "SDL.h"
+
 #include <stdio.h>
 #include <cglm/cglm.h>
-#include <GLFW/glfw3.h>
 
 int main(int argc, char **argv)
 {
-	printf("Hello there.\n");
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+	SDL_Event event;
 
-	GLFWwindow *window;
-
-	/* Initialize the library */
-	if (!glfwInit())
-		return -1;
-
-	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-	if (!window)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		glfwTerminate();
-		return -1;
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
+		return 3;
 	}
 
-	/* Make the window's context current */
-	glfwMakeContextCurrent(window);
-
-	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
+	if (SDL_CreateWindowAndRenderer(1360, 768, SDL_WINDOW_RESIZABLE, &window, &renderer))
 	{
-		/* Swap front and back buffers */
-		glfwSwapBuffers(window);
-
-		/* Poll for and process events */
-		glfwPollEvents();
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
+		return 3;
 	}
 
-	glfwTerminate();
+	while (1)
+	{
+		SDL_PollEvent(&event);
+		if (event.type == SDL_QUIT)
+		{
+			break;
+		}
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+		SDL_RenderClear(renderer);
+		SDL_RenderPresent(renderer);
+	}
+
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+
+	SDL_Quit();
 
 	return 0;
 }
